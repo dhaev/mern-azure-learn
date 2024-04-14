@@ -1,40 +1,26 @@
-import { useEffect } from "react";
-import "./App.css";
-import baseUrl from "./baseUrl";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import Sidebar from './Sidebar';
+import Login from './Login';
+import SearchResult from './SearchResult';
 
-function App() {
-  const navigate = useNavigate();
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`${baseUrl}/get-users`)
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.log(err));
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-      <h1>READ</h1>
-
-      {users &&
-        users.length > 0 &&
-        users.map((user) => {
-          return (
-            <div>
-              <h3>
-                {user.name} {user.lastName}
-              </h3>
-            </div>
-          );
-        })}
-
-      <button onClick={() => navigate("create")}>Create</button>
-    </div>
+    <Router>
+      <div className="app-container"> {/* Add a container for positioning */}
+        <Sidebar />
+        <div className="content-container"> {/* Container for routes */}
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<SearchResult />} />
+            <Route path="/profile" element={<Login />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
